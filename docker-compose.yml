@@ -1,6 +1,18 @@
 version: '3.7'
 
 services:
+  database-exp-docker:
+    image: postgres
+    container_name: database-express-docker-boilerplate
+    restart: always
+    ports:
+      - 55432:5432
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=express-docker-boilerplate
+    volumes:
+      - pgdata:/data/postgres
   app:
     build: .
     container_name: express-docker-boilerplate
@@ -8,3 +20,11 @@ services:
       - 3333:3333
     volumes:
       - .:/usr/app
+    links:
+      - database-exp-docker
+    depends_on:
+      - database-exp-docker
+
+volumes:
+  pgdata:
+    driver: local
